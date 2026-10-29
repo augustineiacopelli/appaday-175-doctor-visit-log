@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="apple-touch-icon" href="https://augustineiacopelli.github.io/appaday/icons/175.png">
+<meta name="apple-mobile-web-app-title" content="Visit Log">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="https://augustineiacopelli.github.io/appaday/manifests/175.webmanifest">
+<script src="https://augustineiacopelli.github.io/appaday/save.js" defer></script>
+<title>Doctor Visit Log | AppADay 175</title>
+<meta name="description" content="Prepare for, record, and follow up on every doctor visit for the whole family, from the family doctor to any specialist. Private and offline on your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141018;
+  --surface:#1E1823;
+  --surface2:#28202F;
+  --line:#3A2F42;
+  --text:#F4EEF4;
+  --muted:#B6AABA;
+  --accent:#D14D72;
+  --accent-hi:#EC7C9C;
+  --btn:#B23A5D;
+  --good:#4CC38A;
+  --warn:#F0B44C;
+  --bad:#F06A5A;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{min-height:100dvh;display:flex;flex-direction:column;font-family:Inter,system-ui,sans-serif;font-size:1rem;line-height:1.45;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+a{color:var(--accent-hi)}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{width:100%;max-width:640px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:"DM Serif Display",Georgia,serif;font-weight:400;margin:0}
+.hdr{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 0 10px}
+.num{background:var(--accent);color:#fff;font-weight:700;font-size:.8rem;padding:4px 9px;border-radius:999px;text-decoration:none;letter-spacing:.04em}
+.hdr h1{font-size:1.45rem;flex:1;line-height:1.1}
+.hdr .back{font-size:.8rem;color:var(--muted);text-decoration:none;display:block;font-family:Inter,sans-serif}
+.iconbtn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+main{flex:1;padding-bottom:96px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(20,16,24,.96);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:20;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.tabs .wrap{display:flex;gap:4px;padding-top:6px;padding-bottom:6px}
+.tab{flex:1;min-height:52px;border:0;background:none;border-radius:12px;color:var(--muted);font-size:.78rem;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--accent-hi);background:var(--surface)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
+.card h2{font-size:1.3rem;margin-bottom:8px}
+.card h3{font-size:1.1rem;margin-bottom:6px}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.btn{min-height:44px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--text)}
+.btn.primary{background:var(--btn);border-color:var(--btn);color:#fff}
+.btn.ghost{background:none}
+.btn.danger{color:var(--bad);border-color:rgba(240,106,90,.4);background:none}
+.btn.block{width:100%}
+.btn.sm{min-height:44px;padding:8px 12px;font-size:.88rem}
+.fab{position:fixed;right:max(16px,calc(50vw - 304px));bottom:calc(84px + env(safe-area-inset-bottom));z-index:21;min-height:56px;padding:0 20px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+label.f{display:block;margin:10px 0 0}
+label.f>span{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:.02em}
+input[type=text],input[type=date],input[type=time],input[type=tel],input[type=url],input[type=number],input[type=search],select,textarea{width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-size:1rem}
+textarea{min-height:84px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent-hi);outline-offset:1px}
+input[type=range]{width:100%;accent-color:var(--accent);min-height:44px}
+input[type=checkbox]{width:24px;height:24px;accent-color:var(--accent);flex:none;margin:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 10px}
+@media(max-width:420px){.grid3{grid-template-columns:1fr 1fr}}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.88rem;font-weight:600;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.add{color:var(--accent-hi);border-style:dashed}
+.chips[style*=wrap] .chip{flex:0 1 auto;white-space:normal;text-align:left;max-width:100%}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-family:"DM Serif Display",serif;font-size:1.6rem;font-weight:400;line-height:1.1}
+.stat span{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.hero{background:linear-gradient(135deg,#5a1d33,#2b1622 60%,#1E1823);border-color:#6b2a44}
+.hero .big{font-family:"DM Serif Display",serif;font-size:2.4rem;line-height:1}
+.vcard{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:10px 0;cursor:pointer}
+.vcard:hover{border-color:var(--accent)}
+.vtop{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.vdate{font-weight:700}
+.vprov{font-family:"DM Serif Display",serif;font-size:1.15rem;margin:2px 0}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.badge{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--surface2);color:var(--muted);letter-spacing:.02em}
+.badge.a{background:rgba(209,77,114,.18);color:var(--accent-hi)}
+.badge.w{background:rgba(240,180,76,.16);color:var(--warn)}
+.badge.g{background:rgba(76,195,138,.15);color:var(--good)}
+.badge.r{background:rgba(240,106,90,.16);color:var(--bad)}
+.sect{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 4px}
+.empty{text-align:center;padding:28px 12px;color:var(--muted)}
+.empty h2{color:var(--text);margin-bottom:8px}
+.todo{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.todo:first-child{border-top:0}
+.todo .t{flex:1;min-width:0}
+.todo.done .tt{text-decoration:line-through;color:var(--muted)}
+.chk{min-width:44px;min-height:44px;display:grid;place-items:center;margin:-10px 0 -10px -10px;cursor:pointer}
+.item{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px 12px;margin:10px 0;position:relative}
+.item .rm{position:absolute;top:4px;right:4px;width:40px;height:40px;border:0;background:none;color:var(--muted);font-size:1.3rem;cursor:pointer;border-radius:10px}
+.item .rm:hover{color:var(--bad)}
+.item>label.f:first-of-type{margin-top:0;padding-right:40px}
+.qrow{display:flex;gap:8px;align-items:flex-start}
+.star{min-width:44px;min-height:44px;border:0;background:none;font-size:1.3rem;cursor:pointer;color:var(--line);margin:-4px -6px 0 -8px}
+.star[aria-pressed="true"]{color:var(--warn)}
+.sev{display:flex;align-items:center;gap:10px}
+.sev output{font-weight:700;min-width:3.2em;text-align:right}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;position:sticky;top:0;z-index:5;margin:6px 0 4px}
+.seg button{flex:1;min-height:44px;border:0;border-radius:9px;background:none;font-weight:700;font-size:.9rem;color:var(--muted);cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--accent);color:#fff}
+.edtop{position:sticky;top:0;z-index:6;background:var(--bg);padding:calc(8px + env(safe-area-inset-top)) 0 6px}
+.edtitle{font-family:"DM Serif Display",serif;font-size:1.25rem;line-height:1.15}
+.hint{font-size:.85rem;color:var(--muted);margin:4px 0 0}
+.tip{border-left:3px solid var(--accent);padding:8px 12px;background:rgba(209,77,114,.08);border-radius:0 10px 10px 0;font-size:.9rem;margin:10px 0}
+.ovl{position:fixed;inset:0;background:rgba(8,6,10,.72);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.ovl.open{display:flex}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:640px;max-height:92dvh;overflow-y:auto;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+@media(min-width:700px){.ovl{align-items:center}.sheet{border-radius:20px}}
+.sheet h2{font-size:1.4rem;margin-bottom:4px}
+.full{position:fixed;inset:0;background:var(--bg);z-index:30;overflow-y:auto;display:none}
+.full.open{display:block}
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#F4EEF4;color:#141018;padding:10px 16px;border-radius:999px;font-weight:600;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.foot{text-align:center;color:var(--muted);font-size:.82rem;padding:24px 0 8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.92rem}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.pill-link{display:inline-flex;align-items:center;min-height:44px}
+.sum{white-space:pre-wrap;font-size:.9rem;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;max-height:50vh;overflow:auto}
+.progress{height:8px;border-radius:999px;background:var(--surface2);overflow:hidden;margin-top:8px}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.bring{display:flex;gap:10px;align-items:center;min-height:44px;cursor:pointer}
+#print-area{display:none}
+@media print{
+  body{background:#fff;color:#000}
+  body>*:not(#print-area){display:none!important}
+  #print-area{display:block!important;font-family:Georgia,serif;color:#000;font-size:11pt;padding:0}
+  #print-area h1{font-size:18pt;margin:0 0 4pt}
+  #print-area h2{font-size:12.5pt;margin:12pt 0 4pt;border-bottom:1px solid #999;padding-bottom:2pt;font-family:Georgia,serif}
+  #print-area p,#print-area li{margin:2pt 0}
+  #print-area .pmeta{color:#333;font-size:10pt}
+  #print-area ul{margin:2pt 0 2pt 16pt;padding:0}
+  #print-area .box{border:1px solid #999;min-height:42pt;margin:3pt 0 8pt}
+}
+</style>
+</head>
+<body>
+<header class="wrap hdr">
+  <a class="num" href="https://augustineiacopelli.github.io/appaday/" aria-label="AppADay portfolio">175</a>
+  <h1><a class="back" href="https://augustineiacopelli.github.io/appaday/">AppADay</a>Doctor Visit Log</h1>
+  <button class="iconbtn" id="gear" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+</header>
+
+<main class="wrap" id="view"></main>
+
+<footer class="wrap foot">
+  Day 175 of <a href="https://augustineiacopelli.github.io/appaday/">AppADay</a> by Augustine Iacopelli. Everything stays on this device. Not medical advice.
+</footer>
+
+<button class="btn primary fab" id="fab">+ New visit</button>
+
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist">
+  <button class="tab" role="tab" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+  <button class="tab" role="tab" data-tab="visits"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Visits</button>
+  <button class="tab" role="tab" data-tab="doctors"><svg viewBox="0 0 24 24"><path d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>Doctors</button>
+  <button class="tab" role="tab" data-tab="health"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></svg>Health</button>
+</div></nav>
+
+<section class="full" id="editor" aria-label="Visit"></section>
+
+<div class="ovl" id="modal" role="dialog" aria-modal="true"><div class="sheet" id="modalBody"></div></div>
+<div class="ovl" id="confirm" role="alertdialog" aria-modal="true"><div class="sheet">
+  <h2 id="cfTitle">Are you sure?</h2><p class="muted" id="cfMsg"></p>
+  <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost" id="cfNo">Cancel</button><button class="btn primary" id="cfYes">Delete</button></div>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="print-area"></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+(function(){
+'use strict';
+var KEY = 'appaday-175-visit-log';
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function pad(n){ return (n < 10 ? '0' : '') + n; }
+function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function parseD(s){ if(!s) return null; var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function fmtDate(s, long){ var d = parseD(s); if(!d) return 'No date'; return d.toLocaleDateString('en-US', long ? {weekday:'long', month:'long', day:'numeric', year:'numeric'} : {weekday:'short', month:'short', day:'numeric', year:'numeric'}); }
+function fmtTime(t){ if(!t) return ''; var p = t.split(':'); var h = +p[0]; var ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + p[1] + ' ' + ap; }
+function daysUntil(s){ var d = parseD(s); if(!d) return null; var t = parseD(todayStr()); return Math.round((d - t) / 86400000); }
+
+/* ---------- reference content ---------- */
+var COMMON_BRING = ['Photo ID and insurance card', 'Medication list, including vitamins and supplements', 'My questions, written down', 'Copay or payment method'];
+var TYPES = {
+  annual: {label:'Annual physical or wellness', bring:['Vaccination record', 'Family health history updates', 'Home readings (blood pressure, weight, glucose)'], q:['core', 'screen', 'meds', 'next']},
+  sick: {label:'Sick visit', bring:['Symptom timeline (when it started, what changed)', 'Temperatures or readings taken at home', 'List of what I already tried'], q:['core', 'dx', 'meds', 'next']},
+  followup: {label:'Follow up', bring:['Notes from the last visit', 'Results of tests since then', 'How the treatment plan is going'], q:['core', 'tests', 'meds', 'next']},
+  spec_new: {label:'Specialist, first visit', bring:['Referral, if my insurance needs one', 'Records, imaging, and test results from other doctors', 'Symptom timeline', 'Prior authorization number, if required', 'Name of my primary care doctor'], q:['core', 'spec', 'dx', 'tests', 'tx', 'next']},
+  spec_fu: {label:'Specialist, follow up', bring:['Results of tests since the last visit', 'How the treatment plan is going', 'Any new records from other doctors'], q:['core', 'spec', 'tests', 'tx', 'next']},
+  procedure: {label:'Procedure or test', bring:['Prep instructions, followed', 'A driver, if sedation is planned', 'Comfortable clothes'], q:['proc', 'tests', 'next']},
+  preop: {label:'Pre op or surgical consult', bring:['Imaging and test results', 'A list of medicines and doses to review', 'Support person'], q:['proc', 'tx', 'meds', 'next']},
+  tele: {label:'Telehealth', bring:['Charged device with camera tested', 'A quiet, private spot', 'Pharmacy name and phone', 'Home readings (temperature, blood pressure, weight)'], q:['core', 'dx', 'meds', 'next']},
+  urgent: {label:'Urgent care or ER', bring:['Allergies and conditions list', 'Name of my primary care doctor, to send records'], q:['core', 'dx', 'meds', 'next']},
+  behavioral: {label:'Counseling or behavioral health', bring:['Notes on mood, sleep, and stressors since last time', 'Goals for this session'], q:['core', 'tx', 'meds', 'next']}
+};
+var QBANK = {
+  core: {label:'Ask Me 3', items:['What is my main problem?', 'What do I need to do?', 'Why is it important for me to do this?']},
+  dx: {label:'Diagnosis', items:['What could be causing this?', 'What else could it be?', 'Is this contagious, and when can I go back to work or school?']},
+  tests: {label:'Tests', items:['Why do I need this test, and what will it show?', 'When and how will I get the results?', 'Who do I call if I have not heard back?']},
+  meds: {label:'Medicines', items:['What is this medicine for, and how long do I take it?', 'What side effects should I watch for?', 'Does it interact with my other medicines or supplements?', 'Is there a lower cost or generic option?']},
+  tx: {label:'Treatment', items:['What are my options, including waiting?', 'What are the risks and benefits of each?', 'What can I do at home to help?']},
+  spec: {label:'Specialist', items:['Will you send your notes to my primary care doctor?', 'How often will I need to see you?', 'Is this something my family doctor can manage going forward?', 'Would a second opinion be reasonable?']},
+  screen: {label:'Screenings', items:['Which screenings or vaccines am I due for?', 'Should my family history change any of my screenings?', 'Are my numbers where they should be?']},
+  proc: {label:'Procedure', items:['How should I prepare, and should I fast?', 'Which medicines should I stop beforehand?', 'What is recovery like, and when can I return to work?', 'What are the risks?']},
+  next: {label:'Next steps', items:['When should I come back?', 'Which symptoms mean I should call right away?', 'What is the best way to reach you with questions?']}
+};
+var SPECIALTIES = ['Family medicine', 'Internal medicine', 'Pediatrics', 'OB/GYN', 'Allergy and immunology', 'Cardiology', 'Dermatology', 'Endocrinology', 'ENT (ear, nose, throat)', 'Gastroenterology', 'Hematology', 'Nephrology', 'Neurology', 'Oncology', 'Ophthalmology', 'Orthopedics', 'Physical therapy', 'Psychiatry', 'Psychology or counseling', 'Pulmonology', 'Rheumatology', 'Sleep medicine', 'Sports medicine', 'Urology', 'Dentist', 'Chiropractor', 'Urgent care'];
+var ROLES = {pcp:'Primary care', spec:'Specialist', urgent:'Urgent care or ER', therapy:'Therapist', other:'Other'};
+var TODO_CHIPS = ['Schedule follow up', 'Get labs drawn', 'Pick up prescription', 'Check portal for results', 'Send records to specialist', 'Call insurance about coverage', 'Book imaging'];
+var TEST_ST = {ordered:'Ordered', done:'Done, waiting', result:'Results in'};
+var REF_ST = {needed:'Needs scheduling', scheduled:'Scheduled', seen:'Seen'};
+var MED_ACT = {start:'Start', change:'Change dose', stop:'Stop', cont:'Keep taking'};
+
+/* ---------- state ---------- */
+var S;
+function fresh(){ var me = {id:uid(), name:'Me', dob:'', meds:[], allergies:'', conditions:'', surgeries:'', family:'', insurance:'', pharmacy:'', pcp:''}; return {v:1, people:[me], providers:[], visits:[], who:'all', tab:'home', vfilter:'all', vq:''}; }
+function load(){
+  try { var raw = localStorage.getItem(KEY); if(raw){ var d = JSON.parse(raw); if(d && d.people && d.people.length) return normalize(d); } } catch(e){}
+  return fresh();
+}
+function normalize(d){
+  d.providers = d.providers || []; d.visits = d.visits || []; d.who = d.who || 'all'; d.tab = d.tab || 'home'; d.vfilter = d.vfilter || 'all'; d.vq = '';
+  d.people.forEach(function(p){ p.meds = p.meds || []; });
+  d.visits.forEach(normVisit);
+  return d;
+}
+function normVisit(v){
+  ['symptoms', 'questions', 'meds', 'tests', 'referrals', 'todos'].forEach(function(k){ v[k] = v[k] || []; });
+  v.vitals = v.vitals || {}; v.ask3 = v.ask3 || {}; v.bring = v.bring || {}; v.followup = v.followup || {};
+  return v;
+}
+var saveT = null;
+function save(now){
+  clearTimeout(saveT);
+  var go = function(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ toast('Could not save. Storage may be full.'); } };
+  if(now) go(); else saveT = setTimeout(go, 250);
+}
+S = load();
+
+function person(id){ for(var i = 0; i < S.people.length; i++) if(S.people[i].id === id) return S.people[i]; return null; }
+function prov(id){ for(var i = 0; i < S.providers.length; i++) if(S.providers[i].id === id) return S.providers[i]; return null; }
+function visit(id){ for(var i = 0; i < S.visits.length; i++) if(S.visits[i].id === id) return S.visits[i]; return null; }
+function provName(v){ var p = prov(v.providerId); return p ? p.name : (v.seenBy || 'Unassigned provider'); }
+function provSub(v){ var p = prov(v.providerId); return p ? (p.specialty || ROLES[p.role] || '') : ''; }
+function scoped(){ return S.visits.filter(function(v){ return S.who === 'all' || v.personId === S.who; }); }
+function isUpcoming(v){ return v.status !== 'done' && (!v.date || v.date >= todayStr()); }
+function needsRecap(v){ return v.status !== 'done' && v.date && v.date < todayStr(); }
+function byDateAsc(a, b){ return (a.date || '9999') < (b.date || '9999') ? -1 : (a.date || '9999') > (b.date || '9999') ? 1 : (a.time || '') < (b.time || '') ? -1 : 1; }
+function byDateDesc(a, b){ return -byDateAsc(a, b); }
+function openTodos(v){ return v.todos.filter(function(t){ return !t.done && t.text; }); }
+function pendingTests(v){ return v.tests.filter(function(t){ return t.name && t.status !== 'result'; }); }
+function pendingRefs(v){ return v.referrals.filter(function(r){ return r.to && r.status !== 'seen'; }); }
+
+/* ---------- toast and confirm ---------- */
+var toastT;
+function toast(m){ var t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('show'); }, 2200); }
+var cfResolve = null;
+function askConfirm(title, msg, ok){
+  $('#cfTitle').textContent = title; $('#cfMsg').textContent = msg || ''; $('#cfYes').textContent = ok || 'Delete';
+  $('#confirm').classList.add('open'); $('#cfYes').focus();
+  return new Promise(function(res){ cfResolve = res; });
+}
+function cfDone(v){ $('#confirm').classList.remove('open'); if(cfResolve){ var r = cfResolve; cfResolve = null; r(v); } }
+$('#cfYes').addEventListener('click', function(){ cfDone(true); });
+$('#cfNo').addEventListener('click', function(){ cfDone(false); });
+$('#confirm').addEventListener('click', function(e){ if(e.target.id === 'confirm') cfDone(false); });
+
+/* ---------- modal ---------- */
+function openModal(html){ $('#modalBody').innerHTML = html; $('#modal').classList.add('open'); var f = $('#modalBody input, #modalBody select'); if(f && window.innerWidth > 700) f.focus(); }
+function closeModal(){ ED.linkProv = false; $('#modal').classList.remove('open'); $('#modalBody').innerHTML = ''; }
+$('#modal').addEventListener('click', function(e){ if(e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Escape') return;
+  if($('#confirm').classList.contains('open')) cfDone(false);
+  else if($('#modal').classList.contains('open')) closeModal();
+  else if($('#editor').classList.contains('open')) closeEditor();
+});
+
+/* ---------- small builders ---------- */
+function opt(val, label, sel){ return '<option value="' + esc(val) + '"' + (sel ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+function personOpts(sel, withAll){ var h = withAll ? opt('all', 'Everyone', sel === 'all') : ''; S.people.forEach(function(p){ h += opt(p.id, p.name, p.id === sel); }); return h; }
+function provOpts(sel){ var h = opt('', 'Choose a provider', !sel); S.providers.slice().sort(function(a, b){ return a.name.localeCompare(b.name); }).forEach(function(p){ h += opt(p.id, p.name + (p.specialty ? ' (' + p.specialty + ')' : ''), p.id === sel); }); h += opt('__new', '+ Add a new provider', false); return h; }
+function typeOpts(sel){ var h = ''; Object.keys(TYPES).forEach(function(k){ h += opt(k, TYPES[k].label, k === sel); }); return h; }
+function whoChips(){
+  if(S.people.length < 2) return '';
+  var h = '<div class="chips" role="group" aria-label="Family member">' + '<button class="chip" data-act="who" data-id="all" aria-pressed="' + (S.who === 'all') + '">Everyone</button>';
+  S.people.forEach(function(p){ h += '<button class="chip" data-act="who" data-id="' + p.id + '" aria-pressed="' + (S.who === p.id) + '">' + esc(p.name) + '</button>'; });
+  return h + '</div>';
+}
+function visitCard(v){
+  var dt = v.date ? fmtDate(v.date) + (v.time ? ', ' + fmtTime(v.time) : '') : 'No date set';
+  var b = [];
+  var du = v.date ? daysUntil(v.date) : null;
+  if(isUpcoming(v) && du !== null) b.push('<span class="badge a">' + (du === 0 ? 'Today' : du === 1 ? 'Tomorrow' : 'In ' + du + ' days') + '</span>');
+  if(needsRecap(v)) b.push('<span class="badge w">Needs recap</span>');
+  if(v.status === 'done') b.push('<span class="badge g">Done</span>');
+  var ot = openTodos(v).length, pt = pendingTests(v).length, pr = pendingRefs(v).length;
+  if(ot) b.push('<span class="badge">' + ot + ' to do</span>');
+  if(pt) b.push('<span class="badge w">' + pt + ' result' + (pt > 1 ? 's' : '') + ' pending</span>');
+  if(pr) b.push('<span class="badge">' + pr + ' referral' + (pr > 1 ? 's' : '') + '</span>');
+  if(isUpcoming(v) && v.questions.length) b.push('<span class="badge">' + v.questions.length + ' question' + (v.questions.length > 1 ? 's' : '') + '</span>');
+  var who = S.people.length > 1 && person(v.personId) ? person(v.personId).name + ' \u00b7 ' : '';
+  var sub = [provSub(v), TYPES[v.type] ? TYPES[v.type].label : ''].filter(Boolean).join(' \u00b7 ');
+  return '<button class="vcard" data-act="openVisit" data-id="' + v.id + '"><div class="vtop"><span class="vdate small">' + esc(dt) + '</span><span class="small muted">' + esc(who) + '</span></div>' +
+    '<div class="vprov">' + esc(provName(v)) + '</div><div class="small muted">' + esc(sub) + '</div>' +
+    (v.diagnosis || v.reason ? '<div class="small" style="margin-top:4px">' + esc(v.diagnosis || v.reason) + '</div>' : '') +
+    (b.length ? '<div class="badges">' + b.join('') + '</div>' : '') + '</button>';
+}
+
+/* ---------- views ---------- */
+function render(){
+  $$('.tab').forEach(function(t){ t.setAttribute('aria-selected', t.getAttribute('data-tab') === S.tab); });
+  var v = $('#view');
+  if(S.tab === 'home') v.innerHTML = viewHome();
+  else if(S.tab === 'visits') v.innerHTML = viewVisits();
+  else if(S.tab === 'doctors') v.innerHTML = viewDoctors();
+  else v.innerHTML = viewHealth();
+  $('#fab').style.display = S.tab === 'health' ? 'none' : '';
+  $('#fab').textContent = S.tab === 'doctors' ? '+ Add provider' : '+ New visit';
+}
+
+function viewHome(){
+  var vs = scoped();
+  var h = whoChips();
+  if(!S.visits.length){
+    return h + '<div class="card empty"><h2>Walk in prepared. Walk out with a plan.</h2>' +
+      '<p>Log what is bothering you before the appointment, capture what the doctor says while you are there, and keep the follow ups from slipping afterward.</p>' +
+      '<button class="btn primary" data-act="newVisit">Plan my first visit</button></div>' +
+      '<div class="card"><h3>How it works</h3><p class="small"><b>Prep.</b> Add symptoms with where, when, and how bad, plus your questions. Star the top three so they get asked first.</p>' +
+      '<p class="small"><b>Visit.</b> Record vitals, what the doctor found, the diagnosis, medicine changes, tests, and referrals.</p>' +
+      '<p class="small"><b>After.</b> Track to dos, results you are waiting on, and the next appointment. Print a one page prep sheet to hand the doctor.</p>' +
+      '<p class="small muted">Add family members under Settings to keep a log for everyone you care for.</p></div>';
+  }
+  var up = vs.filter(isUpcoming).sort(byDateAsc);
+  var recap = vs.filter(needsRecap).sort(byDateDesc);
+  var todos = [], tests = [], refs = [];
+  vs.forEach(function(v){
+    openTodos(v).forEach(function(t){ todos.push({v:v, t:t}); });
+    pendingTests(v).forEach(function(t){ tests.push({v:v, t:t}); });
+    pendingRefs(v).forEach(function(r){ refs.push({v:v, r:r}); });
+  });
+  todos.sort(function(a, b){ return (a.t.due || '9999') < (b.t.due || '9999') ? -1 : 1; });
+  var next = up[0];
+  if(next){
+    var du = daysUntil(next.date);
+    var prog = prepProgress(next);
+    h += '<div class="card hero"><div class="small muted">Next visit' + (S.people.length > 1 && person(next.personId) ? ' for ' + esc(person(next.personId).name) : '') + '</div>' +
+      '<div class="row" style="align-items:flex-end;margin:6px 0"><div class="big">' + (du === null ? '--' : du === 0 ? 'Today' : du === 1 ? 'Tomorrow' : du + ' days') + '</div></div>' +
+      '<div class="vprov">' + esc(provName(next)) + '</div><div class="small muted">' + esc(next.date ? fmtDate(next.date, true) + (next.time ? ' at ' + fmtTime(next.time) : '') : 'No date set') + '</div>' +
+      '<div class="small" style="margin-top:8px">Prep: ' + prog.sym + ' symptom' + (prog.sym === 1 ? '' : 's') + ', ' + prog.q + ' question' + (prog.q === 1 ? '' : 's') + ', ' + prog.bd + ' of ' + prog.bt + ' items ready to bring</div>' +
+      '<div class="progress"><i style="width:' + prog.pct + '%"></i></div>' +
+      '<div class="row" style="margin-top:12px"><button class="btn primary" data-act="openVisit" data-id="' + next.id + '">Open prep</button>' +
+      (next.date ? '<button class="btn" data-act="ics" data-id="' + next.id + '">Add to calendar</button>' : '') + '</div></div>';
+  }
+  h += '<div class="stats"><div class="stat"><b>' + up.length + '</b><span>Upcoming</span></div><div class="stat"><b>' + todos.length + '</b><span>To do</span></div><div class="stat"><b>' + tests.length + '</b><span>Results</span></div><div class="stat"><b>' + refs.length + '</b><span>Referrals</span></div></div>';
+  if(recap.length){
+    h += '<div class="sect">Visits to recap</div><p class="hint">Write down what the doctor said while it is fresh.</p>';
+    recap.slice(0, 3).forEach(function(v){ h += visitCard(v); });
+  }
+  if(todos.length){
+    h += '<div class="sect">Open to dos</div><div class="card">';
+    var t0 = todayStr();
+    todos.slice(0, 12).forEach(function(x){
+      var late = x.t.due && x.t.due < t0;
+      h += '<div class="todo"><label class="chk"><input type="checkbox" data-act="todoHome" data-v="' + x.v.id + '" data-id="' + x.t.id + '" aria-label="Mark done"></label><div class="t"><div class="tt">' + esc(x.t.text) + '</div>' +
+        '<div class="small ' + (late ? '' : 'muted') + '" style="' + (late ? 'color:var(--bad)' : '') + '">' + (x.t.due ? (late ? 'Overdue, was due ' : 'Due ') + esc(fmtDate(x.t.due)) + ' \u00b7 ' : '') + esc(provName(x.v)) + '</div></div></div>';
+    });
+    h += '</div>';
+  }
+  if(tests.length){
+    h += '<div class="sect">Waiting on results</div><div class="card">';
+    tests.forEach(function(x){
+      h += '<div class="todo"><div class="t"><div class="tt">' + esc(x.t.name) + ' <span class="badge w">' + esc(TEST_ST[x.t.status] || 'Ordered') + '</span></div><div class="small muted">Ordered by ' + esc(provName(x.v)) + (x.v.date ? ' on ' + esc(fmtDate(x.v.date)) : '') + '</div></div><button class="btn sm" data-act="openVisit" data-id="' + x.v.id + '" data-sec="visit">Log result</button></div>';
+    });
+    h += '<p class="hint">If you have not heard back when you were told to expect results, call the office. No news is not always good news.</p></div>';
+  }
+  if(refs.length){
+    h += '<div class="sect">Referrals</div><div class="card">';
+    refs.forEach(function(x){
+      h += '<div class="todo"><div class="t"><div class="tt">' + esc(x.r.to) + ' <span class="badge">' + esc(REF_ST[x.r.status] || 'Needs scheduling') + '</span></div><div class="small muted">From ' + esc(provName(x.v)) + (x.r.reason ? ' \u00b7 ' + esc(x.r.reason) : '') + '</div></div><button class="btn sm" data-act="bookRef" data-v="' + x.v.id + '" data-id="' + x.r.id + '">Book</button></div>';
+    });
+    h += '</div>';
+  }
+  if(up.length > 1){ h += '<div class="sect">Also coming up</div>'; up.slice(1, 5).forEach(function(v){ h += visitCard(v); }); }
+  return h;
+}
+
+function prepProgress(v){
+  var t = TYPES[v.type] || TYPES.sick;
+  var items = COMMON_BRING.concat(t.bring);
+  var bd = items.filter(function(i){ return v.bring[i]; }).length;
+  var sym = v.symptoms.filter(function(s){ return s.name; }).length;
+  var q = v.questions.filter(function(x){ return x.text; }).length;
+  var score = Math.min(1, q / 3) * 40 + Math.min(1, (sym + (v.reason ? 1 : 0)) / 2) * 25 + (bd / items.length) * 35;
+  return {sym:sym, q:q, bd:bd, bt:items.length, pct:Math.round(score)};
+}
+
+function viewVisits(){
+  var h = whoChips();
+  h += '<div class="row" style="margin:6px 0"><input type="search" class="grow" id="vq" placeholder="Search symptoms, diagnoses, notes" value="' + esc(S.vq) + '" aria-label="Search visits"></div>';
+  h += '<div class="chips" role="group" aria-label="Filter">';
+  [['all', 'All'], ['up', 'Upcoming'], ['past', 'Past'], ['pcp', 'Primary care'], ['spec', 'Specialists'], ['open', 'Open items']].forEach(function(f){
+    h += '<button class="chip" data-act="vfilter" data-id="' + f[0] + '" aria-pressed="' + (S.vfilter === f[0]) + '">' + f[1] + '</button>';
+  });
+  h += '</div><div id="vlist">' + visitList() + '</div>';
+  return h;
+}
+function visitList(){
+  var q = (S.vq || '').toLowerCase().trim();
+  var vs = scoped().filter(function(v){
+    var p = prov(v.providerId);
+    if(S.vfilter === 'up' && !isUpcoming(v)) return false;
+    if(S.vfilter === 'past' && isUpcoming(v)) return false;
+    if(S.vfilter === 'pcp' && !(p && p.role === 'pcp')) return false;
+    if(S.vfilter === 'spec' && !(p && p.role === 'spec')) return false;
+    if(S.vfilter === 'open' && !(openTodos(v).length || pendingTests(v).length || pendingRefs(v).length)) return false;
+    if(q){
+      var hay = [provName(v), provSub(v), v.reason, v.diagnosis, v.doctorSaid, v.plan, v.notes, v.seenBy, TYPES[v.type] ? TYPES[v.type].label : ''];
+      v.symptoms.forEach(function(s){ hay.push(s.name, s.location, s.notes); });
+      v.questions.forEach(function(x){ hay.push(x.text, x.answer); });
+      v.meds.forEach(function(m){ hay.push(m.name); });
+      v.tests.forEach(function(t){ hay.push(t.name, t.result); });
+      if(hay.join(' ').toLowerCase().indexOf(q) < 0) return false;
+    }
+    return true;
+  });
+  if(!vs.length) return '<div class="empty">' + (S.visits.length ? 'No visits match.' : 'No visits yet. Tap New visit to start one.') + '</div>';
+  var up = vs.filter(isUpcoming).sort(byDateAsc), past = vs.filter(function(v){ return !isUpcoming(v); }).sort(byDateDesc);
+  var h = '';
+  if(up.length){ h += '<div class="sect">Upcoming</div>'; up.forEach(function(v){ h += visitCard(v); }); }
+  if(past.length){
+    h += '<div class="sect">History</div>';
+    var yr = '';
+    past.forEach(function(v){ var y = v.date ? v.date.slice(0, 4) : ''; if(y !== yr){ yr = y; if(y) h += '<div class="small muted" style="margin-top:12px;font-weight:700">' + y + '</div>'; } h += visitCard(v); });
+  }
+  return h;
+}
+
+function viewDoctors(){
+  if(!S.providers.length) return '<div class="card empty"><h2>Your care team</h2><p>Add your family doctor and any specialists once. Every visit links to them, so their phone, portal, and history are a tap away.</p><button class="btn primary" data-act="editProv" data-id="">Add a provider</button></div>';
+  var groups = {};
+  S.providers.forEach(function(p){ var r = p.role || 'other'; (groups[r] = groups[r] || []).push(p); });
+  var h = '';
+  Object.keys(ROLES).forEach(function(r){
+    if(!groups[r]) return;
+    h += '<div class="sect">' + esc(ROLES[r]) + '</div>';
+    groups[r].sort(function(a, b){ return a.name.localeCompare(b.name); }).forEach(function(p){
+      var vs = S.visits.filter(function(v){ return v.providerId === p.id; });
+      var last = vs.filter(function(v){ return v.status === 'done' || needsRecap(v); }).sort(byDateDesc)[0];
+      var nxt = vs.filter(isUpcoming).sort(byDateAsc)[0];
+      h += '<div class="card"><div class="vtop"><div class="grow"><div class="vprov">' + esc(p.name) + '</div><div class="small muted">' + esc([p.specialty, p.practice].filter(Boolean).join(' \u00b7 ')) + '</div></div><button class="btn sm ghost" data-act="editProv" data-id="' + p.id + '">Edit</button></div>' +
+        '<div class="small" style="margin-top:6px">' + vs.length + ' visit' + (vs.length === 1 ? '' : 's') + (last ? ' \u00b7 last ' + esc(fmtDate(last.date)) : '') + (nxt ? ' \u00b7 next ' + esc(fmtDate(nxt.date)) : '') + '</div>' +
+        (p.notes ? '<div class="small muted" style="margin-top:4px">' + esc(p.notes) + '</div>' : '') +
+        '<div class="row" style="margin-top:10px">' +
+        (p.phone ? '<a class="btn sm" href="tel:' + esc(p.phone.replace(/[^0-9+]/g, '')) + '">Call</a>' : '') +
+        (p.portal ? '<a class="btn sm" href="' + esc(safeUrl(p.portal)) + '" target="_blank" rel="noopener">Portal</a>' : '') +
+        (p.address ? '<a class="btn sm" href="https://maps.google.com/?q=' + encodeURIComponent(p.address) + '" target="_blank" rel="noopener">Map</a>' : '') +
+        '<button class="btn sm" data-act="newVisitWith" data-id="' + p.id + '">New visit</button>' +
+        (vs.length ? '<button class="btn sm ghost" data-act="provHistory" data-id="' + p.id + '">History</button>' : '') + '</div></div>';
+    });
+  });
+  return h;
+}
+function safeUrl(u){ u = String(u || '').trim(); if(!/^https?:\/\//i.test(u)) u = 'https://' + u; return u; }
+
+function viewHealth(){
+  var pid = S.who !== 'all' && person(S.who) ? S.who : S.people[0].id;
+  var p = person(pid);
+  var h = '';
+  if(S.people.length > 1){
+    h += '<div class="chips" role="group" aria-label="Family member">';
+    S.people.forEach(function(x){ h += '<button class="chip" data-act="who" data-id="' + x.id + '" aria-pressed="' + (x.id === pid) + '">' + esc(x.name) + '</button>'; });
+    h += '</div>';
+  }
+  h += '<div class="card"><h2>' + esc(p.name) + '</h2><p class="hint">This profile prints on every prep sheet, so the doctor sees the same up to date list each time.</p>' +
+    '<div class="grid2"><label class="f"><span>Date of birth</span><input type="date" data-p="' + pid + '" data-k="dob" value="' + esc(p.dob) + '"></label>' +
+    '<label class="f"><span>Primary care doctor</span><select data-p="' + pid + '" data-k="pcp">' + opt('', 'None set', !p.pcp) + S.providers.map(function(x){ return opt(x.id, x.name, x.id === p.pcp); }).join('') + '</select></label></div>' +
+    '<label class="f"><span>Allergies and reactions</span><textarea data-p="' + pid + '" data-k="allergies" placeholder="Penicillin, hives. No known food allergies.">' + esc(p.allergies) + '</textarea></label>' +
+    '<label class="f"><span>Ongoing conditions</span><textarea data-p="' + pid + '" data-k="conditions" placeholder="High blood pressure since 2021">' + esc(p.conditions) + '</textarea></label>' +
+    '<label class="f"><span>Past surgeries and hospital stays</span><textarea data-p="' + pid + '" data-k="surgeries">' + esc(p.surgeries) + '</textarea></label>' +
+    '<label class="f"><span>Family history</span><textarea data-p="' + pid + '" data-k="family" placeholder="Father, heart disease at 60">' + esc(p.family) + '</textarea></label>' +
+    '<div class="grid2"><label class="f"><span>Insurance</span><input type="text" data-p="' + pid + '" data-k="insurance" value="' + esc(p.insurance) + '" placeholder="Plan name"></label>' +
+    '<label class="f"><span>Pharmacy</span><input type="text" data-p="' + pid + '" data-k="pharmacy" value="' + esc(p.pharmacy) + '" placeholder="Name and phone"></label></div></div>';
+  h += '<div class="card"><div class="vtop"><h2>Medicines</h2><span class="small muted">' + p.meds.length + ' listed</span></div><p class="hint">Include vitamins, supplements, and over the counter medicines. Doctors need the whole list to catch interactions.</p><div id="medlist">';
+  p.meds.forEach(function(m){
+    h += '<div class="item"><button class="rm" data-act="rmPMed" data-p="' + pid + '" data-id="' + m.id + '" aria-label="Remove">\u00d7</button>' +
+      '<label class="f"><span>Medicine</span><input type="text" data-pm="' + pid + '" data-id="' + m.id + '" data-k="name" value="' + esc(m.name) + '"></label>' +
+      '<div class="grid3"><label class="f"><span>Dose</span><input type="text" data-pm="' + pid + '" data-id="' + m.id + '" data-k="dose" value="' + esc(m.dose) + '" placeholder="10 mg"></label>' +
+      '<label class="f"><span>How often</span><input type="text" data-pm="' + pid + '" data-id="' + m.id + '" data-k="freq" value="' + esc(m.freq) + '" placeholder="Once daily"></label>' +
+      '<label class="f"><span>For</span><input type="text" data-pm="' + pid + '" data-id="' + m.id + '" data-k="why" value="' + esc(m.why) + '" placeholder="Blood pressure"></label></div></div>';
+  });
+  h += '</div><button class="btn block" data-act="addPMed" data-p="' + pid + '" style="margin-top:8px">+ Add medicine</button></div>';
+  var vs = S.visits.filter(function(v){ return v.personId === pid && v.diagnosis; }).sort(byDateDesc);
+  if(vs.length){
+    h += '<div class="card"><h3>Diagnoses on record</h3>';
+    vs.forEach(function(v){ h += '<div class="todo"><div class="t"><div class="tt">' + esc(v.diagnosis) + '</div><div class="small muted">' + esc(fmtDate(v.date)) + ' \u00b7 ' + esc(provName(v)) + '</div></div></div>'; });
+    h += '</div>';
+  }
+  h += '<button class="btn block" data-act="printProfile" data-p="' + pid + '">Print health summary</button>';
+  return h;
+}
+
+/* ---------- visit editor ---------- */
+var ED = {id:null, sec:'prep'};
+function openEditor(id, sec){
+  var v = visit(id); if(!v) return;
+  ED.id = id; ED.sec = sec || (isUpcoming(v) ? 'prep' : 'visit');
+  renderEditor();
+  $('#editor').classList.add('open'); $('#editor').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closeEditor(){ $('#editor').classList.remove('open'); document.body.style.overflow = ''; ED.id = null; save(true); render(); }
+function renderEditor(keepScroll){
+  var v = visit(ED.id); if(!v) return closeEditor();
+  var sc = $('#editor').scrollTop;
+  var p = person(v.personId);
+  var h = '<div class="wrap"><div class="edtop"><div class="row"><button class="iconbtn" data-act="closeEd" aria-label="Back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>' +
+    '<div class="grow"><div class="edtitle">' + esc(provName(v)) + '</div><div class="small muted">' + esc((S.people.length > 1 && p ? p.name + ' \u00b7 ' : '') + (v.date ? fmtDate(v.date) : 'No date')) + (v.time ? ', ' + fmtTime(v.time) : '') + '</div></div>' +
+    '<button class="btn sm ' + (v.status === 'done' ? '' : 'primary') + '" data-act="toggleDone">' + (v.status === 'done' ? 'Reopen' : 'Mark done') + '</button></div>' +
+    '<div class="seg" role="tablist">' + [['prep', 'Prep'], ['visit', 'Visit'], ['after', 'After'], ['summary', 'Summary']].map(function(s){ return '<button role="tab" data-act="sec" data-id="' + s[0] + '" aria-selected="' + (ED.sec === s[0]) + '">' + s[1] + '</button>'; }).join('') + '</div></div>';
+  if(ED.sec === 'prep') h += secPrep(v);
+  else if(ED.sec === 'visit') h += secVisit(v);
+  else if(ED.sec === 'after') h += secAfter(v);
+  else h += secSummary(v);
+  h += '<div style="height:40px"></div></div>';
+  $('#editor').innerHTML = h;
+  if(keepScroll) $('#editor').scrollTop = sc; else $('#editor').scrollTop = 0;
+}
+function fv(k, label, type, v, extra){
+  var val = getPath(v, k);
+  extra = extra || '';
+  if(type === 'textarea') return '<label class="f"><span>' + label + '</span><textarea data-f="' + k + '" ' + extra + '>' + esc(val) + '</textarea></label>';
+  return '<label class="f"><span>' + label + '</span><input type="' + type + '" data-f="' + k + '" value="' + esc(val) + '" ' + extra + '></label>';
+}
+function getPath(o, k){ var p = k.split('.'); for(var i = 0; i < p.length; i++){ if(o == null) return ''; o = o[p[i]]; } return o == null ? '' : o; }
+function setPath(o, k, val){ var p = k.split('.'); for(var i = 0; i < p.length - 1; i++){ o[p[i]] = o[p[i]] || {}; o = o[p[i]]; } o[p[p.length - 1]] = val; }
+function li(list, it, k, label, type, extra){
+  var val = it[k] == null ? '' : it[k];
+  var a = 'data-l="' + list + '" data-id="' + it.id + '" data-k="' + k + '"';
+  if(type === 'textarea') return '<label class="f"><span>' + label + '</span><textarea ' + a + ' ' + (extra || '') + '>' + esc(val) + '</textarea></label>';
+  if(type === 'select'){ var h = '<label class="f"><span>' + label + '</span><select ' + a + '>'; Object.keys(extra).forEach(function(o){ h += opt(o, extra[o], o === val); }); return h + '</select></label>'; }
+  return '<label class="f"><span>' + label + '</span><input type="' + type + '" ' + a + ' value="' + esc(val) + '" ' + (extra || '') + '></label>';
+}
+function rmBtn(list, id){ return '<button class="rm" data-act="rmItem" data-l="' + list + '" data-id="' + id + '" aria-label="Remove">\u00d7</button>'; }
+
+function secPrep(v){
+  var t = TYPES[v.type] || TYPES.sick;
+  var h = '<div class="card"><h2>The appointment</h2>' +
+    '<div class="grid2"><label class="f"><span>Date</span><input type="date" data-f="date" data-re="1" value="' + esc(v.date) + '"></label><label class="f"><span>Time</span><input type="time" data-f="time" value="' + esc(v.time) + '"></label></div>' +
+    '<label class="f"><span>Provider</span><select data-f="providerId" data-re="1">' + provOpts(v.providerId) + '</select></label>' +
+    '<div class="grid2"><label class="f"><span>Visit type</span><select data-f="type" data-re="1">' + typeOpts(v.type) + '</select></label>' +
+    (S.people.length > 1 ? '<label class="f"><span>Patient</span><select data-f="personId" data-re="1">' + personOpts(v.personId) + '</select></label>' : '<span></span>') + '</div>' +
+    fv('reason', 'Main reason for the visit, in one sentence', 'text', v, 'placeholder="Knee pain when climbing stairs for 3 weeks"') +
+    fv('goal', 'What I want to walk out with', 'text', v, 'placeholder="A diagnosis and a plan to get back to running"') +
+    fv('companion', 'Bringing someone along', 'text', v, 'placeholder="Spouse, to take notes"') + '</div>';
+
+  h += '<div class="card"><div class="vtop"><h2>Symptoms and concerns</h2><span class="small muted">' + v.symptoms.length + '</span></div>' +
+    '<p class="hint">Doctors ask the same things every time: where, when it started, how bad, what pattern, and what makes it better or worse. Answer them here first.</p>';
+  v.symptoms.forEach(function(s){
+    h += '<div class="item">' + rmBtn('symptoms', s.id) +
+      li('symptoms', s, 'name', 'Symptom or concern', 'text', 'placeholder="Sharp pain, inside of right knee"') +
+      '<div class="grid2">' + li('symptoms', s, 'location', 'Where', 'text', 'placeholder="Right knee"') + li('symptoms', s, 'onset', 'Started', 'text', 'placeholder="About 3 weeks ago"') + '</div>' +
+      '<label class="f"><span>How bad, 0 to 10</span><div class="sev"><input type="range" min="0" max="10" step="1" data-l="symptoms" data-id="' + s.id + '" data-k="severity" value="' + esc(s.severity == null ? 0 : s.severity) + '"><output>' + (s.severity == null ? 0 : s.severity) + '/10</output></div></label>' +
+      li('symptoms', s, 'pattern', 'Pattern', 'select', {'':'Choose', constant:'Constant', comes:'Comes and goes', worse:'Getting worse', better:'Getting better', night:'Worse at night', morning:'Worse in the morning', activity:'With activity', meals:'Around meals'}) +
+      '<div class="grid2">' + li('symptoms', s, 'worse', 'Makes it worse', 'text', 'placeholder="Stairs, kneeling"') + li('symptoms', s, 'better', 'Helps', 'text', 'placeholder="Ice, ibuprofen"') + '</div>' +
+      li('symptoms', s, 'notes', 'Other details', 'textarea', 'placeholder="Clicks when bending. No swelling. Fell skiing in February."') + '</div>';
+  });
+  h += '<div class="row"><button class="btn grow" data-act="addItem" data-l="symptoms">+ Add symptom or concern</button>' +
+    '<button class="btn ghost" data-act="carry">Bring forward from last visit</button></div></div>';
+
+  h += '<div class="card"><div class="vtop"><h2>My questions</h2><span class="small muted">' + v.questions.length + '</span></div>' +
+    '<p class="hint">Star your top three. Visits often run short, so ask the starred ones first.</p>';
+  var qs = v.questions.slice().sort(function(a, b){ return (b.top ? 1 : 0) - (a.top ? 1 : 0); });
+  qs.forEach(function(q){
+    h += '<div class="item">' + rmBtn('questions', q.id) + '<div class="qrow"><button class="star" data-act="star" data-id="' + q.id + '" aria-pressed="' + !!q.top + '" aria-label="Top question">\u2605</button><div class="grow">' + li('questions', q, 'text', 'Question', 'text') + '</div></div></div>';
+  });
+  h += '<button class="btn block" data-act="addItem" data-l="questions">+ Write a question</button>';
+  h += '<div class="sect">Suggested for a ' + esc(t.label.toLowerCase()) + '</div>';
+  var have = {}; v.questions.forEach(function(q){ have[(q.text || '').toLowerCase()] = 1; });
+  t.q.forEach(function(g){
+    var items = QBANK[g].items.filter(function(x){ return !have[x.toLowerCase()]; });
+    if(!items.length) return;
+    h += '<div class="small muted" style="margin-top:8px;font-weight:600">' + esc(QBANK[g].label) + '</div><div class="chips" style="flex-wrap:wrap">';
+    items.forEach(function(x){ h += '<button class="chip add" data-act="addQ" data-q="' + esc(x) + '">+ ' + esc(x) + '</button>'; });
+    h += '</div>';
+  });
+  h += '</div>';
+
+  var items = COMMON_BRING.concat(t.bring);
+  h += '<div class="card"><h2>Bring with me</h2>';
+  items.forEach(function(i){ h += '<label class="bring"><input type="checkbox" data-bring="' + esc(i) + '"' + (v.bring[i] ? ' checked' : '') + '><span>' + esc(i) + '</span></label>'; });
+  h += '<div class="tip">Print the prep sheet from the Summary tab and hand it to the nurse at check in. It lists your concerns, questions, medicines, and allergies on one page.</div></div>';
+  return h;
+}
+
+function secVisit(v){
+  var p = prov(v.providerId);
+  var h = '<div class="card"><h2>Who I saw</h2>' +
+    fv('seenBy', 'Clinician, if not ' + (p ? p.name : 'the listed provider'), 'text', v, 'placeholder="Nurse practitioner, resident, or partner doctor"') +
+    '<div class="sect" style="margin-top:14px">Vitals</div><div class="grid3">' +
+    fv('vitals.bp', 'Blood pressure', 'text', v, 'placeholder="120/80" inputmode="numeric"') + fv('vitals.hr', 'Pulse', 'text', v, 'placeholder="72" inputmode="numeric"') +
+    fv('vitals.temp', 'Temperature', 'text', v, 'placeholder="98.6" inputmode="decimal"') + fv('vitals.weight', 'Weight', 'text', v, 'placeholder="180 lb"') +
+    fv('vitals.o2', 'Oxygen', 'text', v, 'placeholder="98%"') + fv('vitals.other', 'Other', 'text', v, 'placeholder="A1C 5.6"') + '</div></div>';
+
+  h += '<div class="card"><h2>What the doctor said</h2>' +
+    fv('doctorSaid', 'Findings and explanation', 'textarea', v, 'placeholder="Exam showed tenderness along the inner knee. Likely a mild MCL strain."') +
+    fv('diagnosis', 'Diagnosis or working diagnosis', 'text', v, 'placeholder="Mild MCL sprain, right knee"') +
+    '<div class="sect" style="margin-top:14px">Ask Me 3</div>' +
+    fv('ask3.problem', 'What is my main problem?', 'text', v) + fv('ask3.todo', 'What do I need to do?', 'text', v) + fv('ask3.why', 'Why is it important?', 'text', v) +
+    fv('plan', 'Instructions and plan', 'textarea', v, 'placeholder="Rest from running 2 weeks, ice 20 minutes twice a day, start PT"') +
+    fv('warning', 'Call right away if', 'text', v, 'placeholder="Swelling, locking, or fever"') + '</div>';
+
+  if(v.questions.length){
+    h += '<div class="card"><h2>Answers to my questions</h2>';
+    v.questions.slice().sort(function(a, b){ return (b.top ? 1 : 0) - (a.top ? 1 : 0); }).forEach(function(q){
+      h += '<div class="item"><label class="bring" style="padding-right:4px"><input type="checkbox" data-l="questions" data-id="' + q.id + '" data-k="answered"' + (q.answered ? ' checked' : '') + '><span' + (q.top ? ' style="font-weight:700"' : '') + '>' + (q.top ? '\u2605 ' : '') + esc(q.text || 'Untitled question') + '</span></label>' +
+        li('questions', q, 'answer', 'Answer', 'textarea', 'style="min-height:60px"') + '</div>';
+    });
+    h += '</div>';
+  }
+
+  h += '<div class="card"><h2>Medicine changes</h2>';
+  v.meds.forEach(function(m){
+    h += '<div class="item">' + rmBtn('meds', m.id) + li('meds', m, 'name', 'Medicine', 'text') +
+      '<div class="grid2">' + li('meds', m, 'action', 'Change', 'select', MED_ACT) + li('meds', m, 'dose', 'Dose and how often', 'text', 'placeholder="20 mg daily"') + '</div>' +
+      li('meds', m, 'notes', 'Why, side effects to watch, how long', 'text') + '</div>';
+  });
+  h += '<div class="row"><button class="btn grow" data-act="addItem" data-l="meds">+ Add medicine change</button>' + (v.meds.length ? '<button class="btn ghost" data-act="applyMeds">Update my med list</button>' : '') + '</div></div>';
+
+  h += '<div class="card"><h2>Tests ordered</h2>';
+  v.tests.forEach(function(x){
+    h += '<div class="item">' + rmBtn('tests', x.id) + li('tests', x, 'name', 'Test', 'text', 'placeholder="MRI right knee, lipid panel"') +
+      '<div class="grid2">' + li('tests', x, 'status', 'Status', 'select', TEST_ST) + li('tests', x, 'expect', 'Results expected', 'text', 'placeholder="Portal in 3 days"') + '</div>' +
+      li('tests', x, 'result', 'Result', 'textarea', 'style="min-height:60px" placeholder="Normal, or the numbers and what they mean"') + '</div>';
+  });
+  h += '<button class="btn block" data-act="addItem" data-l="tests">+ Add test</button></div>';
+
+  h += '<div class="card"><h2>Referrals</h2>';
+  v.referrals.forEach(function(r){
+    h += '<div class="item">' + rmBtn('referrals', r.id) + li('referrals', r, 'to', 'Referred to', 'text', 'placeholder="Orthopedics, Dr. Name"') +
+      '<div class="grid2">' + li('referrals', r, 'status', 'Status', 'select', REF_ST) + li('referrals', r, 'reason', 'Reason', 'text') + '</div>' +
+      '<button class="btn sm" data-act="bookRef" data-v="' + v.id + '" data-id="' + r.id + '" style="margin-top:8px">Plan this visit</button></div>';
+  });
+  h += '<button class="btn block" data-act="addItem" data-l="referrals">+ Add referral</button></div>';
+  return h;
+}
+
+function secAfter(v){
+  var h = '<div class="card"><h2>To dos</h2>';
+  v.todos.forEach(function(t){
+    h += '<div class="item">' + rmBtn('todos', t.id) + '<div class="qrow"><label class="chk" style="margin:14px 0 0 -10px"><input type="checkbox" data-l="todos" data-id="' + t.id + '" data-k="done"' + (t.done ? ' checked' : '') + ' aria-label="Done"></label><div class="grow">' +
+      li('todos', t, 'text', 'Task', 'text') + li('todos', t, 'due', 'Due', 'date') + '</div></div></div>';
+  });
+  h += '<button class="btn block" data-act="addItem" data-l="todos">+ Add to do</button><div class="chips" style="flex-wrap:wrap;margin-top:8px">';
+  TODO_CHIPS.forEach(function(c){ h += '<button class="chip add" data-act="addTodo" data-q="' + esc(c) + '">+ ' + esc(c) + '</button>'; });
+  h += '</div></div>';
+
+  h += '<div class="card"><h2>Next appointment</h2>' +
+    '<div class="grid2">' + fv('followup.date', 'Come back on or around', 'date', v) + fv('followup.note', 'For', 'text', v, 'placeholder="Recheck in 6 weeks"') + '</div>' +
+    '<button class="btn block" data-act="makeFollow" style="margin-top:10px">Plan the follow up visit</button>' +
+    '<p class="hint">Creates an upcoming visit with the same provider and carries over any questions that did not get answered.</p></div>';
+
+  h += '<div class="card"><h2>Billing</h2><div class="grid2">' + fv('copay', 'Paid at visit', 'text', v, 'placeholder="$40 copay"') + fv('billing', 'Claim or bill status', 'text', v, 'placeholder="Waiting on EOB"') + '</div></div>';
+  h += '<div class="card"><h2>Notes</h2>' + fv('notes', 'Anything else, how I felt about the visit', 'textarea', v) + '</div>';
+  h += '<button class="btn danger block" data-act="delVisit">Delete this visit</button>';
+  return h;
+}
+
+function secSummary(v){
+  var h = '<div class="card"><h2>Prep sheet</h2><p class="hint">One page for the doctor: reason, concerns, questions, medicines, allergies, and conditions.</p>' +
+    '<div class="row"><button class="btn primary" data-act="print" data-id="prep">Print prep sheet</button><button class="btn" data-act="copy" data-id="prep">Copy text</button>' + (navigator.share ? '<button class="btn" data-act="share" data-id="prep">Share</button>' : '') + '</div>' +
+    '<div class="sum" style="margin-top:10px">' + esc(textPrep(v)) + '</div></div>';
+  h += '<div class="card"><h2>Visit recap</h2><p class="hint">What was said and decided, for your records or for family who help with care.</p>' +
+    '<div class="row"><button class="btn primary" data-act="print" data-id="recap">Print recap</button><button class="btn" data-act="copy" data-id="recap">Copy text</button>' + (navigator.share ? '<button class="btn" data-act="share" data-id="recap">Share</button>' : '') + '</div>' +
+    '<div class="sum" style="margin-top:10px">' + esc(textRecap(v)) + '</div></div>';
+  if(v.date) h += '<button class="btn block" data-act="ics" data-id="' + v.id + '">Add to calendar</button>';
+  return h;
+}
+
+/* ---------- summaries ---------- */
+var PAT = {constant:'constant', comes:'comes and goes', worse:'getting worse', better:'getting better', night:'worse at night', morning:'worse in the morning', activity:'with activity', meals:'around meals'};
+function symLine(s){
+  var bits = [];
+  if(s.location) bits.push('where: ' + s.location);
+  if(s.onset) bits.push('started: ' + s.onset);
+  if(s.severity != null && s.severity !== '') bits.push('severity ' + s.severity + '/10');
+  if(s.pattern) bits.push(PAT[s.pattern] || s.pattern);
+  if(s.worse) bits.push('worse with ' + s.worse);
+  if(s.better) bits.push('helped by ' + s.better);
+  return s.name + (bits.length ? ' (' + bits.join('; ') + ')' : '') + (s.notes ? '. ' + s.notes : '');
+}
+function medLine(m){ return [m.name, m.dose, m.freq].filter(Boolean).join(', ') + (m.why ? ' (for ' + m.why + ')' : ''); }
+function headLines(v){
+  var p = person(v.personId) || {}, pr = prov(v.providerId);
+  var L = [];
+  L.push('Patient: ' + (p.name || '') + (p.dob ? ', born ' + fmtDate(p.dob) : ''));
+  L.push('Visit: ' + (v.date ? fmtDate(v.date, true) : 'No date') + (v.time ? ' at ' + fmtTime(v.time) : ''));
+  L.push('With: ' + provName(v) + (pr && pr.specialty ? ', ' + pr.specialty : '') + (TYPES[v.type] ? ' (' + TYPES[v.type].label + ')' : ''));
+  return L;
+}
+function textPrep(v){
+  var p = person(v.personId) || {meds:[]};
+  var L = headLines(v);
+  if(v.reason) L.push('', 'REASON FOR VISIT', v.reason);
+  if(v.goal) L.push('Hoping to leave with: ' + v.goal);
+  var sy = v.symptoms.filter(function(s){ return s.name; });
+  if(sy.length){ L.push('', 'SYMPTOMS AND CONCERNS'); sy.forEach(function(s, i){ L.push((i + 1) + '. ' + symLine(s)); }); }
+  var qs = v.questions.filter(function(q){ return q.text; }).sort(function(a, b){ return (b.top ? 1 : 0) - (a.top ? 1 : 0); });
+  if(qs.length){ L.push('', 'MY QUESTIONS'); qs.forEach(function(q, i){ L.push((i + 1) + '. ' + (q.top ? '[Top] ' : '') + q.text); }); }
+  L.push('', 'CURRENT MEDICINES'); var ms = p.meds.filter(function(m){ return m.name; });
+  if(ms.length) ms.forEach(function(m){ L.push('- ' + medLine(m)); }); else L.push('None listed');
+  L.push('', 'ALLERGIES', p.allergies || 'None listed');
+  if(p.conditions) L.push('', 'CONDITIONS', p.conditions);
+  if(p.surgeries) L.push('', 'SURGERIES AND HOSPITAL STAYS', p.surgeries);
+  if(p.family) L.push('', 'FAMILY HISTORY', p.family);
+  var pcp = prov(p.pcp); if(pcp && pcp.id !== v.providerId) L.push('', 'Primary care: ' + pcp.name + (pcp.phone ? ', ' + pcp.phone : ''));
+  if(p.pharmacy) L.push('Pharmacy: ' + p.pharmacy);
+  return L.join('\n');
+}
+function textRecap(v){
+  var L = headLines(v);
+  if(v.seenBy) L.push('Seen by: ' + v.seenBy);
+  var vt = v.vitals, vl = [];
+  if(vt.bp) vl.push('BP ' + vt.bp); if(vt.hr) vl.push('pulse ' + vt.hr); if(vt.temp) vl.push('temp ' + vt.temp); if(vt.weight) vl.push('weight ' + vt.weight); if(vt.o2) vl.push('O2 ' + vt.o2); if(vt.other) vl.push(vt.other);
+  if(vl.length) L.push('Vitals: ' + vl.join(', '));
+  if(v.diagnosis) L.push('', 'DIAGNOSIS', v.diagnosis);
+  if(v.doctorSaid) L.push('', 'WHAT THE DOCTOR SAID', v.doctorSaid);
+  if(v.ask3.problem || v.ask3.todo || v.ask3.why){ L.push('', 'ASK ME 3'); if(v.ask3.problem) L.push('Main problem: ' + v.ask3.problem); if(v.ask3.todo) L.push('What to do: ' + v.ask3.todo); if(v.ask3.why) L.push('Why it matters: ' + v.ask3.why); }
+  if(v.plan) L.push('', 'PLAN', v.plan);
+  if(v.warning) L.push('Call right away if: ' + v.warning);
+  var qa = v.questions.filter(function(q){ return q.text && (q.answer || q.answered); });
+  if(qa.length){ L.push('', 'QUESTIONS AND ANSWERS'); qa.forEach(function(q){ L.push('Q: ' + q.text); L.push('A: ' + (q.answer || 'Answered')); }); }
+  var un = v.questions.filter(function(q){ return q.text && !q.answer && !q.answered; });
+  if(un.length && v.status === 'done'){ L.push('', 'STILL UNANSWERED'); un.forEach(function(q){ L.push('- ' + q.text); }); }
+  var md = v.meds.filter(function(m){ return m.name; });
+  if(md.length){ L.push('', 'MEDICINE CHANGES'); md.forEach(function(m){ L.push('- ' + (MED_ACT[m.action] || 'Start') + ': ' + m.name + (m.dose ? ', ' + m.dose : '') + (m.notes ? '. ' + m.notes : '')); }); }
+  var ts = v.tests.filter(function(t){ return t.name; });
+  if(ts.length){ L.push('', 'TESTS'); ts.forEach(function(t){ L.push('- ' + t.name + ' (' + (TEST_ST[t.status] || 'Ordered') + ')' + (t.expect ? ', expected ' + t.expect : '') + (t.result ? ': ' + t.result : '')); }); }
+  var rf = v.referrals.filter(function(r){ return r.to; });
+  if(rf.length){ L.push('', 'REFERRALS'); rf.forEach(function(r){ L.push('- ' + r.to + (r.reason ? ' for ' + r.reason : '') + ' (' + (REF_ST[r.status] || 'Needs scheduling') + ')'); }); }
+  var td = v.todos.filter(function(t){ return t.text; });
+  if(td.length){ L.push('', 'TO DO'); td.forEach(function(t){ L.push((t.done ? '[x] ' : '[ ] ') + t.text + (t.due ? ' (due ' + fmtDate(t.due) + ')' : '')); }); }
+  if(v.followup.date || v.followup.note) L.push('', 'NEXT APPOINTMENT: ' + (v.followup.date ? fmtDate(v.followup.date) : '') + (v.followup.note ? ' ' + v.followup.note : ''));
+  if(v.notes) L.push('', 'NOTES', v.notes);
+  return L.join('\n');
+}
+function printText(title, txt, withBoxes){
+  var lines = txt.split('\n');
+  var h = '<h1>' + esc(title) + '</h1>';
+  var i = 0, inList = false;
+  var head = [];
+  while(i < lines.length && lines[i] !== ''){ head.push(lines[i]); i++; }
+  h += '<p class="pmeta">' + head.map(esc).join('<br>') + '</p>';
+  for(; i < lines.length; i++){
+    var l = lines[i];
+    if(l === ''){ if(inList){ h += '</ul>'; inList = false; } continue; }
+    if(/^[A-Z][A-Z0-9 ]+$/.test(l) && l.length < 40){ if(inList){ h += '</ul>'; inList = false; } h += '<h2>' + esc(l.charAt(0) + l.slice(1).toLowerCase()) + '</h2>'; continue; }
+    if(/^(- |\d+\. |\[.\] )/.test(l)){ if(!inList){ h += '<ul>'; inList = true; } h += '<li>' + esc(l.replace(/^- /, '')) + '</li>'; continue; }
+    if(inList){ h += '</ul>'; inList = false; }
+    h += '<p>' + esc(l) + '</p>';
+  }
+  if(inList) h += '</ul>';
+  if(withBoxes) h += '<h2>Notes during the visit</h2><div class="box"></div><div class="box"></div><h2>Next steps</h2><div class="box"></div>';
+  h += '<p class="pmeta" style="margin-top:14pt">Doctor Visit Log, AppADay 175. augustineiacopelli.github.io/appaday</p>';
+  $('#print-area').innerHTML = h;
+  setTimeout(function(){ window.print(); }, 60);
+}
+function textProfile(p){
+  var L = ['Patient: ' + p.name + (p.dob ? ', born ' + fmtDate(p.dob) : ''), 'Printed: ' + fmtDate(todayStr(), true)];
+  L.push('', 'CURRENT MEDICINES'); var ms = p.meds.filter(function(m){ return m.name; });
+  if(ms.length) ms.forEach(function(m){ L.push('- ' + medLine(m)); }); else L.push('None listed');
+  L.push('', 'ALLERGIES', p.allergies || 'None listed');
+  if(p.conditions) L.push('', 'CONDITIONS', p.conditions);
+  if(p.surgeries) L.push('', 'SURGERIES AND HOSPITAL STAYS', p.surgeries);
+  if(p.family) L.push('', 'FAMILY HISTORY', p.family);
+  var team = {}; S.visits.forEach(function(v){ if(v.personId === p.id && prov(v.providerId)) team[v.providerId] = 1; }); if(p.pcp) team[p.pcp] = 1;
+  var ids = Object.keys(team);
+  if(ids.length){ L.push('', 'CARE TEAM'); ids.forEach(function(id){ var x = prov(id); L.push('- ' + x.name + (x.specialty ? ', ' + x.specialty : '') + (x.phone ? ', ' + x.phone : '')); }); }
+  var dx = S.visits.filter(function(v){ return v.personId === p.id && v.diagnosis; }).sort(byDateDesc);
+  if(dx.length){ L.push('', 'RECENT DIAGNOSES'); dx.slice(0, 12).forEach(function(v){ L.push('- ' + v.diagnosis + ' (' + fmtDate(v.date) + ', ' + provName(v) + ')'); }); }
+  if(p.insurance) L.push('', 'Insurance: ' + p.insurance);
+  if(p.pharmacy) L.push('Pharmacy: ' + p.pharmacy);
+  return L.join('\n');
+}
+function copyText(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ toast('Copied'); }, function(){ fallbackCopy(t); }); }
+  else fallbackCopy(t);
+}
+function fallbackCopy(t){ var ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('Copied'); } catch(e){ toast('Copy failed'); } document.body.removeChild(ta); }
+
+/* ---------- calendar ---------- */
+function icsFor(v){
+  var tz = '';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){}
+  var d = v.date.replace(/-/g, '');
+  var start, end, extra = '';
+  var p = prov(v.providerId);
+  if(v.time){
+    var hm = v.time.split(':'); var sh = +hm[0], sm = +hm[1];
+    var eh = sh + 1;
+    var st = pad(sh) + pad(sm) + '00', et = pad(eh % 24) + pad(sm) + '00';
+    var endD = d;
+    if(eh >= 24){ var nd = parseD(v.date); nd.setDate(nd.getDate() + 1); endD = nd.getFullYear() + pad(nd.getMonth() + 1) + pad(nd.getDate()); }
+    if(tz === 'America/Chicago'){
+      extra = ['BEGIN:VTIMEZONE', 'TZID:America/Chicago', 'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT', 'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD', 'END:VTIMEZONE'].join('\r\n') + '\r\n';
+      start = 'DTSTART;TZID=America/Chicago:' + d + 'T' + st; end = 'DTEND;TZID=America/Chicago:' + endD + 'T' + et;
+    } else {
+      var s0 = new Date(+v.date.slice(0, 4), +v.date.slice(5, 7) - 1, +v.date.slice(8, 10), sh, sm);
+      var e0 = new Date(s0.getTime() + 3600000);
+      var z = function(x){ return x.getUTCFullYear() + pad(x.getUTCMonth() + 1) + pad(x.getUTCDate()) + 'T' + pad(x.getUTCHours()) + pad(x.getUTCMinutes()) + '00Z'; };
+      start = 'DTSTART:' + z(s0); end = 'DTEND:' + z(e0);
+    }
+  } else {
+    var n = parseD(v.date); n.setDate(n.getDate() + 1);
+    start = 'DTSTART;VALUE=DATE:' + d; end = 'DTEND;VALUE=DATE:' + n.getFullYear() + pad(n.getMonth() + 1) + pad(n.getDate());
+  }
+  var icsEsc = function(s){ return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); };
+  var now = new Date();
+  var stamp = now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate()) + 'T' + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + '00Z';
+  var desc = (v.reason ? 'Reason: ' + v.reason + '\n' : '') + 'Prep in Doctor Visit Log: augustineiacopelli.github.io/appaday-175-doctor-visit-log';
+  return 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//AppADay//Doctor Visit Log 175//EN\r\nCALSCALE:GREGORIAN\r\n' + extra +
+    'BEGIN:VEVENT\r\nUID:' + v.id + '@appaday175\r\nDTSTAMP:' + stamp + '\r\n' + start + '\r\n' + end + '\r\nSUMMARY:' + icsEsc('Appointment: ' + provName(v)) + '\r\n' +
+    (p && p.address ? 'LOCATION:' + icsEsc(p.address) + '\r\n' : '') + 'DESCRIPTION:' + icsEsc(desc) + '\r\n' +
+    'BEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Prep your questions for tomorrow\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
+}
+function download(name, text, type){
+  var blob = new Blob([text], {type:type});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); if(a.parentNode) a.parentNode.removeChild(a); }, 400);
+}
+
+/* ---------- forms ---------- */
+function newVisitForm(pre){
+  pre = pre || {};
+  var pid = pre.personId || (S.who !== 'all' && person(S.who) ? S.who : S.people[0].id);
+  var h = '<h2>' + (pre.title || 'New visit') + '</h2><p class="hint">You can change any of this later.</p>' +
+    (S.people.length > 1 ? '<label class="f"><span>Patient</span><select id="nvP">' + personOpts(pid) + '</select></label>' : '') +
+    '<label class="f"><span>Provider</span><select id="nvProv">' + provOpts(pre.providerId || '') + '</select></label>' +
+    '<div id="nvNew" style="display:none"><div class="grid2"><label class="f"><span>New provider name</span><input type="text" id="nvPN" placeholder="Dr. Jane Smith"></label><label class="f"><span>Specialty</span><input type="text" id="nvPS" list="specList" placeholder="Family medicine"></label></div></div>' +
+    '<label class="f"><span>Visit type</span><select id="nvT">' + typeOpts(pre.type || 'sick') + '</select></label>' +
+    '<div class="grid2"><label class="f"><span>Date</span><input type="date" id="nvD" value="' + esc(pre.date || '') + '"></label><label class="f"><span>Time</span><input type="time" id="nvTm"></label></div>' +
+    '<label class="f"><span>Main reason</span><input type="text" id="nvR" value="' + esc(pre.reason || '') + '" placeholder="What is this visit about?"></label>' +
+    '<datalist id="specList">' + SPECIALTIES.map(function(s){ return '<option value="' + esc(s) + '">'; }).join('') + '</datalist>' +
+    '<div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" data-act="closeModal">Cancel</button><button class="btn primary" data-act="createVisit" data-carry="' + esc(pre.carryFrom || '') + '">Create visit</button></div>';
+  openModal(h);
+  if(!S.providers.length){ $('#nvProv').value = '__new'; $('#nvNew').style.display = ''; }
+  $('#nvProv').addEventListener('change', function(){ $('#nvNew').style.display = this.value === '__new' ? '' : 'none'; });
+}
+function provForm(id){
+  var p = prov(id) || {role:'pcp'};
+  var h = '<h2>' + (id ? 'Edit provider' : 'Add a provider') + '</h2>' +
+    '<label class="f"><span>Name</span><input type="text" id="pfN" value="' + esc(p.name) + '" placeholder="Dr. Jane Smith"></label>' +
+    '<div class="grid2"><label class="f"><span>Role</span><select id="pfR">' + Object.keys(ROLES).map(function(r){ return opt(r, ROLES[r], r === p.role); }).join('') + '</select></label>' +
+    '<label class="f"><span>Specialty</span><input type="text" id="pfS" list="specList2" value="' + esc(p.specialty) + '" placeholder="Family medicine"></label></div>' +
+    '<label class="f"><span>Practice or clinic</span><input type="text" id="pfPr" value="' + esc(p.practice) + '"></label>' +
+    '<div class="grid2"><label class="f"><span>Phone</span><input type="tel" id="pfPh" value="' + esc(p.phone) + '"></label><label class="f"><span>Fax, for records</span><input type="tel" id="pfFx" value="' + esc(p.fax) + '"></label></div>' +
+    '<label class="f"><span>Patient portal link</span><input type="url" id="pfPo" value="' + esc(p.portal) + '" placeholder="https://"></label>' +
+    '<label class="f"><span>Address</span><input type="text" id="pfA" value="' + esc(p.address) + '"></label>' +
+    '<label class="f"><span>Notes</span><textarea id="pfNo" placeholder="Front desk tips, parking, who referred me">' + esc(p.notes) + '</textarea></label>' +
+    '<datalist id="specList2">' + SPECIALTIES.map(function(s){ return '<option value="' + esc(s) + '">'; }).join('') + '</datalist>' +
+    '<div class="row" style="justify-content:space-between;margin-top:16px">' + (id ? '<button class="btn danger" data-act="delProv" data-id="' + id + '">Delete</button>' : '<span></span>') +
+    '<div class="row"><button class="btn ghost" data-act="closeModal">Cancel</button><button class="btn primary" data-act="saveProv" data-id="' + (id || '') + '">Save</button></div></div>';
+  openModal(h);
+}
+function settingsForm(){
+  var h = '<h2>Settings</h2><div class="sect">Family members</div><p class="hint">Keep a separate log, med list, and health profile for each person you take to the doctor.</p><div id="plist">';
+  S.people.forEach(function(p){
+    var n = S.visits.filter(function(v){ return v.personId === p.id; }).length;
+    h += '<div class="row" style="margin:8px 0"><input type="text" class="grow" data-pn="' + p.id + '" value="' + esc(p.name) + '" aria-label="Name"><span class="small muted">' + n + ' visit' + (n === 1 ? '' : 's') + '</span>' +
+      (S.people.length > 1 ? '<button class="btn sm danger" data-act="delPerson" data-id="' + p.id + '">Remove</button>' : '') + '</div>';
+  });
+  h += '</div><div class="row"><input type="text" class="grow" id="newPerson" placeholder="Name"><button class="btn" data-act="addPerson">Add</button></div>' +
+    '<div class="sect">Backup</div><p class="hint">Your log lives only in this browser. Save a backup file now and then, and after any big visit.</p>' +
+    '<div class="row"><button class="btn" data-act="export">Download backup</button><button class="btn" data-act="import">Restore from file</button></div>' +
+    '<div class="sect">Privacy</div><p class="small muted">Nothing you type leaves this device. There is no account, no server, and no tracking. Anyone who can open this browser can read the log, so keep your phone locked. This app helps you organize; it does not give medical advice.</p>' +
+    '<div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn danger" data-act="wipe">Erase everything</button><button class="btn primary" data-act="closeModal">Done</button></div>';
+  openModal(h);
+}
+
+function newItem(list){
+  var id = uid();
+  if(list === 'symptoms') return {id:id, name:'', severity:0};
+  if(list === 'tests') return {id:id, name:'', status:'ordered'};
+  if(list === 'referrals') return {id:id, to:'', status:'needed'};
+  if(list === 'meds') return {id:id, name:'', action:'start'};
+  if(list === 'todos') return {id:id, text:'', done:false};
+  return {id:id, text:''};
+}
+function createVisitFrom(o){
+  var v = normVisit({id:uid(), personId:o.personId, providerId:o.providerId || '', type:o.type || 'sick', date:o.date || '', time:o.time || '', reason:o.reason || '', status:'planned', created:Date.now()});
+  S.visits.push(v); save(true); return v;
+}
+function carryOpen(from, to){
+  var have = {}; to.questions.forEach(function(q){ have[(q.text || '').toLowerCase()] = 1; });
+  var n = 0;
+  from.questions.forEach(function(q){ if(q.text && !q.answered && !q.answer && !have[q.text.toLowerCase()]){ to.questions.push({id:uid(), text:q.text, top:q.top}); n++; } });
+  return n;
+}
+function focusLast(sel){ var els = $$(sel, $('#editor')); var el = els[els.length - 1]; if(el){ el.focus(); el.scrollIntoView({block:'center', behavior:'smooth'}); } }
+
+/* ---------- events ---------- */
+document.addEventListener('click', function(e){
+  var t = e.target.closest('[data-act]'); if(!t) return;
+  var act = t.getAttribute('data-act'), id = t.getAttribute('data-id');
+  var v = ED.id ? visit(ED.id) : null;
+  switch(act){
+    case 'who': S.who = id; save(); render(); break;
+    case 'vfilter': S.vfilter = id; save(); render(); break;
+    case 'newVisit': newVisitForm(); break;
+    case 'newVisitWith': newVisitForm({providerId:id, type:(prov(id) && prov(id).role === 'spec') ? 'spec_fu' : 'followup'}); break;
+    case 'openVisit': openEditor(id, t.getAttribute('data-sec')); break;
+    case 'closeEd': closeEditor(); break;
+    case 'closeModal': closeModal(); break;
+    case 'sec': ED.sec = id; renderEditor(); break;
+    case 'provHistory': S.tab = 'visits'; S.vq = prov(id) ? prov(id).name : ''; S.vfilter = 'all'; save(); render(); window.scrollTo(0, 0); break;
+    case 'editProv': provForm(id); break;
+    case 'saveProv': {
+      var name = $('#pfN').value.trim(); if(!name){ toast('Add a name'); $('#pfN').focus(); return; }
+      var p = prov(id); if(!p){ p = {id:uid()}; S.providers.push(p); }
+      p.name = name; p.role = $('#pfR').value; p.specialty = $('#pfS').value.trim(); p.practice = $('#pfPr').value.trim(); p.phone = $('#pfPh').value.trim(); p.fax = $('#pfFx').value.trim(); p.portal = $('#pfPo').value.trim(); p.address = $('#pfA').value.trim(); p.notes = $('#pfNo').value.trim();
+      if(ED.linkProv && ED.id && visit(ED.id)){ visit(ED.id).providerId = p.id; ED.linkProv = false; save(true); closeModal(); renderEditor(true); toast('Saved and linked'); break; }
+      save(true); closeModal(); render(); toast('Saved'); break;
+    }
+    case 'delProv': {
+      var n = S.visits.filter(function(x){ return x.providerId === id; }).length;
+      askConfirm('Delete this provider?', n ? 'Their ' + n + ' visit' + (n === 1 ? '' : 's') + ' will stay in your log under the name ' + prov(id).name + '.' : 'This cannot be undone.').then(function(ok){
+        if(!ok) return; var nm = prov(id).name;
+        S.visits.forEach(function(x){ if(x.providerId === id){ x.providerId = ''; x.seenBy = x.seenBy || nm; } });
+        S.people.forEach(function(x){ if(x.pcp === id) x.pcp = ''; });
+        S.providers = S.providers.filter(function(x){ return x.id !== id; }); save(true); closeModal(); render();
+      }); break;
+    }
+    case 'createVisit': {
+      var pid = $('#nvP') ? $('#nvP').value : S.people[0].id;
+      var prv = $('#nvProv').value;
+      if(prv === '__new'){
+        var nn = $('#nvPN').value.trim(); if(!nn){ toast('Name the provider'); $('#nvPN').focus(); return; }
+        var sp = $('#nvPS').value.trim();
+        var np = {id:uid(), name:nn, specialty:sp, role:/family|internal|pediatric|general|primary/i.test(sp) || !sp ? 'pcp' : /urgent|emergency/i.test(sp) ? 'urgent' : /counsel|therap|psycholog/i.test(sp) ? 'therapy' : 'spec'};
+        S.providers.push(np); prv = np.id;
+      }
+      var nv = createVisitFrom({personId:pid, providerId:prv, type:$('#nvT').value, date:$('#nvD').value, time:$('#nvTm').value, reason:$('#nvR').value.trim()});
+      var cf = t.getAttribute('data-carry'); if(cf && visit(cf)) carryOpen(visit(cf), nv);
+      save(true); closeModal(); render(); openEditor(nv.id); break;
+    }
+    case 'toggleDone': v.status = v.status === 'done' ? 'planned' : 'done'; save(); renderEditor(true); toast(v.status === 'done' ? 'Marked done' : 'Reopened'); break;
+    case 'addItem': {
+      var l = t.getAttribute('data-l'); v[l].push(newItem(l)); save(); renderEditor(true);
+      focusLast('[data-l="' + l + '"][data-k="' + (l === 'referrals' ? 'to' : l === 'symptoms' || l === 'meds' || l === 'tests' ? 'name' : 'text') + '"]'); break;
+    }
+    case 'rmItem': {
+      var l2 = t.getAttribute('data-l');
+      var it = v[l2].filter(function(x){ return x.id === id; })[0];
+      var empty = it && !Object.keys(it).some(function(k){ return k !== 'id' && k !== 'severity' && k !== 'status' && k !== 'action' && k !== 'done' && it[k]; });
+      var doRm = function(){ v[l2] = v[l2].filter(function(x){ return x.id !== id; }); save(); renderEditor(true); };
+      if(empty) doRm(); else askConfirm('Remove this item?', '').then(function(ok){ if(ok) doRm(); });
+      break;
+    }
+    case 'star': v.questions.forEach(function(q){ if(q.id === id){ q.top = !q.top; } }); save(); renderEditor(true); break;
+    case 'addQ': v.questions.push({id:uid(), text:t.getAttribute('data-q')}); save(); renderEditor(true); toast('Question added'); break;
+    case 'addTodo': v.todos.push({id:uid(), text:t.getAttribute('data-q'), done:false}); save(); renderEditor(true); break;
+    case 'carry': {
+      var prev = S.visits.filter(function(x){ return x.id !== v.id && x.personId === v.personId && (x.date || '') <= (v.date || '9999'); }).sort(function(a, b){ var sa = a.providerId === v.providerId ? 1 : 0, sb = b.providerId === v.providerId ? 1 : 0; if(sa !== sb) return sb - sa; return byDateDesc(a, b); })[0];
+      if(!prev){ toast('No earlier visit to pull from'); break; }
+      var nq = carryOpen(prev, v), ns = 0;
+      var hs = {}; v.symptoms.forEach(function(s){ hs[(s.name || '').toLowerCase()] = 1; });
+      prev.symptoms.forEach(function(s){ if(s.name && !hs[s.name.toLowerCase()]){ var c = JSON.parse(JSON.stringify(s)); c.id = uid(); c.notes = (c.notes ? c.notes + ' ' : '') + '(Also raised ' + fmtDate(prev.date) + ')'; v.symptoms.push(c); ns++; } });
+      save(); renderEditor(true); toast(nq + ns ? 'Brought forward ' + ns + ' symptom' + (ns === 1 ? '' : 's') + ' and ' + nq + ' question' + (nq === 1 ? '' : 's') : 'Nothing open to bring forward'); break;
+    }
+    case 'applyMeds': {
+      var pp = person(v.personId); var ch = 0;
+      v.meds.forEach(function(m){
+        if(!m.name) return; var key = m.name.trim().toLowerCase();
+        var ex = pp.meds.filter(function(x){ return (x.name || '').trim().toLowerCase() === key; })[0];
+        if(m.action === 'stop'){ if(ex){ pp.meds = pp.meds.filter(function(x){ return x !== ex; }); ch++; } }
+        else if(m.action === 'start' || m.action === 'change'){ if(ex){ if(m.dose){ ex.dose = m.dose; ex.freq = ''; } } else pp.meds.push({id:uid(), name:m.name.trim(), dose:m.dose || '', freq:'', why:v.diagnosis || ''}); ch++; }
+      });
+      save(); toast(ch ? 'Med list updated for ' + pp.name : 'Med list already matches'); break;
+    }
+    case 'bookRef': {
+      var sv = visit(t.getAttribute('data-v')); var r = sv.referrals.filter(function(x){ return x.id === id; })[0];
+      if(r.status === 'needed') r.status = 'scheduled'; save();
+      var match = S.providers.filter(function(x){ return r.to && r.to.toLowerCase().indexOf(x.name.toLowerCase()) >= 0; })[0];
+      if(ED.id) closeEditor();
+      newVisitForm({title:'Plan the referral visit', personId:sv.personId, providerId:match ? match.id : '', type:'spec_new', reason:(r.reason ? r.reason : 'Referral') + ' (referred by ' + provName(sv) + ')'});
+      if(!match){ $('#nvProv').value = '__new'; $('#nvNew').style.display = ''; $('#nvPN').value = r.to; }
+      break;
+    }
+    case 'makeFollow': {
+      var f = createVisitFrom({personId:v.personId, providerId:v.providerId, type:TYPES[v.type] && /spec/.test(v.type) ? 'spec_fu' : 'followup', date:v.followup.date || '', reason:v.followup.note || ('Follow up' + (v.diagnosis ? ': ' + v.diagnosis : ''))});
+      var c2 = carryOpen(v, f);
+      if(v.followup.date && !v.todos.some(function(x){ return /schedule follow/i.test(x.text || ''); })) v.todos.push({id:uid(), text:'Schedule follow up', done:false, due:''});
+      save(true); toast('Follow up planned' + (c2 ? ', ' + c2 + ' question' + (c2 === 1 ? '' : 's') + ' carried over' : '')); ED.id = f.id; ED.sec = 'prep'; renderEditor(); break;
+    }
+    case 'delVisit': askConfirm('Delete this visit?', 'Its notes, to dos, and results will be gone.').then(function(ok){ if(!ok) return; S.visits = S.visits.filter(function(x){ return x.id !== v.id; }); save(true); closeEditor(); toast('Visit deleted'); }); break;
+    case 'print': printText(id === 'prep' ? 'Visit prep sheet' : 'Visit recap', id === 'prep' ? textPrep(v) : textRecap(v), id === 'prep'); break;
+    case 'copy': copyText(id === 'prep' ? textPrep(v) : textRecap(v)); break;
+    case 'share': navigator.share({title:id === 'prep' ? 'Visit prep sheet' : 'Visit recap', text:id === 'prep' ? textPrep(v) : textRecap(v)}).catch(function(){}); break;
+    case 'ics': { var iv = visit(id); if(!iv || !iv.date){ toast('Set a date first'); break; } download('appointment-' + iv.date + '.ics', icsFor(iv), 'text/calendar'); break; }
+    case 'addPMed': person(t.getAttribute('data-p')).meds.push({id:uid(), name:'', dose:'', freq:'', why:''}); save(); render(); var ins = $$('#medlist [data-k="name"]'); if(ins.length) ins[ins.length - 1].focus(); break;
+    case 'rmPMed': { var pm = person(t.getAttribute('data-p')); pm.meds = pm.meds.filter(function(x){ return x.id !== id; }); save(); render(); break; }
+    case 'printProfile': { var pr2 = person(t.getAttribute('data-p')); printText('Health summary', textProfile(pr2), false); break; }
+    case 'addPerson': { var nm2 = $('#newPerson').value.trim(); if(!nm2){ $('#newPerson').focus(); return; } S.people.push({id:uid(), name:nm2, dob:'', meds:[], allergies:'', conditions:'', surgeries:'', family:'', insurance:'', pharmacy:'', pcp:''}); save(true); settingsForm(); render(); break; }
+    case 'delPerson': {
+      var nv2 = S.visits.filter(function(x){ return x.personId === id; }).length;
+      askConfirm('Remove ' + person(id).name + '?', nv2 ? 'Their ' + nv2 + ' visit' + (nv2 === 1 ? '' : 's') + ' and health profile will be deleted.' : 'Their health profile will be deleted.', 'Remove').then(function(ok){
+        if(!ok) return; S.visits = S.visits.filter(function(x){ return x.personId !== id; }); S.people = S.people.filter(function(x){ return x.id !== id; }); if(S.who === id) S.who = 'all'; save(true); settingsForm(); render();
+      }); break;
+    }
+    case 'export': { var dd = JSON.parse(JSON.stringify(S)); dd.exported = new Date().toISOString(); dd.app = 'appaday-175-doctor-visit-log'; download('doctor-visit-log-' + todayStr() + '.json', JSON.stringify(dd, null, 2), 'application/json'); break; }
+    case 'import': $('#importFile').click(); break;
+    case 'wipe': askConfirm('Erase everything?', 'Every visit, provider, and profile on this device will be deleted. Download a backup first if you might want it.', 'Erase').then(function(ok){ if(!ok) return; S = fresh(); save(true); closeModal(); render(); toast('Erased'); }); break;
+  }
+});
+
+$('#fab').addEventListener('click', function(){ if(S.tab === 'doctors') provForm(''); else newVisitForm(); });
+$('#gear').addEventListener('click', settingsForm);
+$$('.tab').forEach(function(b){ b.addEventListener('click', function(){ S.tab = b.getAttribute('data-tab'); save(); render(); window.scrollTo(0, 0); }); });
+
+$('#importFile').addEventListener('change', function(){
+  var f = this.files && this.files[0]; if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
+    try {
+      var d = JSON.parse(rd.result);
+      if(!d || !Array.isArray(d.people) || !Array.isArray(d.visits)) throw new Error('bad');
+      askConfirm('Replace your current log?', 'The backup has ' + d.visits.length + ' visit' + (d.visits.length === 1 ? '' : 's') + ' for ' + d.people.length + ' ' + (d.people.length === 1 ? 'person' : 'people') + '. What is on this device now will be replaced.', 'Restore').then(function(ok){
+        if(!ok) return; S = normalize(d); save(true); closeModal(); render(); toast('Restored');
+      });
+    } catch(e){ toast('That file is not a Doctor Visit Log backup'); }
+  };
+  rd.readAsText(f); this.value = '';
+});
+
+function onField(e, isChange){
+  var el = e.target;
+  if(el.id === 'vq'){ S.vq = el.value; $('#vlist').innerHTML = visitList(); return; }
+  if(el.hasAttribute('data-pn')){ var pp = person(el.getAttribute('data-pn')); if(pp){ pp.name = el.value.trim() || pp.name; save(); if(isChange) render(); } return; }
+  if(el.hasAttribute('data-p')){ var pe = person(el.getAttribute('data-p')); if(pe){ pe[el.getAttribute('data-k')] = el.value; save(); } return; }
+  if(el.hasAttribute('data-pm')){ var pm = person(el.getAttribute('data-pm')); if(pm){ pm.meds.forEach(function(m){ if(m.id === el.getAttribute('data-id')) m[el.getAttribute('data-k')] = el.value; }); save(); } return; }
+  var v = ED.id ? visit(ED.id) : null; if(!v) return;
+  if(el.hasAttribute('data-bring')){ v.bring[el.getAttribute('data-bring')] = el.checked; save(); return; }
+  if(el.hasAttribute('data-f')){
+    var k = el.getAttribute('data-f');
+    if(k === 'providerId' && el.value === '__new'){ el.value = v.providerId || ''; ED.linkProv = true; provForm(''); return; }
+    setPath(v, k, el.value); v.updated = Date.now(); save();
+    if(isChange && el.hasAttribute('data-re')) renderEditor(true);
+    return;
+  }
+  if(el.hasAttribute('data-l')){
+    var l = el.getAttribute('data-l'), id = el.getAttribute('data-id'), kk = el.getAttribute('data-k');
+    v[l].forEach(function(it){ if(it.id === id) it[kk] = el.type === 'checkbox' ? el.checked : (el.type === 'range' ? +el.value : el.value); });
+    if(el.type === 'range'){ var o = el.parentNode.querySelector('output'); if(o) o.textContent = el.value + '/10'; }
+    v.updated = Date.now(); save();
+  }
+}
+document.addEventListener('input', function(e){ onField(e, false); });
+document.addEventListener('change', function(e){
+  var el = e.target;
+  if(el.getAttribute('data-act') === 'todoHome'){
+    var v = visit(el.getAttribute('data-v')); if(v) v.todos.forEach(function(t){ if(t.id === el.getAttribute('data-id')) t.done = true; });
+    save(true); toast('Done'); setTimeout(render, 250); return;
+  }
+  onField(e, true);
+});
+window.addEventListener('pagehide', function(){ save(true); });
+document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') save(true); });
+
+render();
+})();
+</script>
+</body>
+</html>
